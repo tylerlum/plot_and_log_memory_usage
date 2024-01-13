@@ -142,11 +142,12 @@ def main() -> None:
         axes[i].grid()
 
     plt.tight_layout()
-    plt.show()
 
     if args.save_filepath:
         print(f"Saving plot to {args.save_filepath}")
         plt.savefig(args.save_filepath)
+
+    plt.show()
 
 
 if __name__ == "__main__":
