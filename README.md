@@ -48,14 +48,12 @@ Creates a plot of the memory usage from the log file for a given timerange
 ```
 plot_logged_memory_usage --help
 
-usage: plot_logged_memory_usage [-h] [--end-datetime DATETIME] [--start-datetime {None}|DATETIME] [--lookback-seconds {None}|FLOAT] [--log-folderpath PATH]
-                                [--save-filepath {None}|PATH]
+usage: plot_logged_memory_usage [-h] [OPTIONS]
 
-╭─ arguments ───────────────────────────────────────────────────────────╮
+╭─ options ─────────────────────────────────────────────────────────────╮
 │ -h, --help              show this help message and exit               │
-│ --end-datetime DATETIME                                               │
-│                         (default: '2024-01-13 02:21:50.512677')       │
-│ --start-datetime {None}|DATETIME                                      │
+│ --end-datetime-str STR  (default: 2024-01-13_02-49-51-581943)         │
+│ --start-datetime-str {None}|STR                                       │
 │                         (default: None)                               │
 │ --lookback-seconds {None}|FLOAT                                       │
 │                         (default: None)                               │
@@ -65,7 +63,7 @@ usage: plot_logged_memory_usage [-h] [--end-datetime DATETIME] [--start-datetime
 ╰───────────────────────────────────────────────────────────────────────╯
 ```
 
-You must specify either a start datetime (in the above datetime) OR lookback seconds (seconds before end datetime)
+You must specify either a start datetime (in the above format) OR lookback seconds (seconds before end datetime)
 
 Example:
 
@@ -74,3 +72,9 @@ plot_logged_memory_usage --lookback-seconds 60
 ```
 
 ![plot_logged_memory_usage](https://github.com/tylerlum/plot_and_log_memory_usage/assets/26510814/e451e88e-493e-4009-aeca-706f0a0fa7fd)
+
+```
+plot_logged_memory_usage --start-datetime-str "2024-01-13_02-21-50-512677" --save-filepath "output.png"
+
+Saving plot to output.png
+```

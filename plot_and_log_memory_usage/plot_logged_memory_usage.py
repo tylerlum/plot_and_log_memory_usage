@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 
 @dataclass
 class Args:
-    end_datetime: datetime = datetime.now()
-    start_datetime: Optional[datetime] = None
+    end_datetime_str: str = datetime_to_str(datetime.now())
+    start_datetime_str: Optional[str] = None
     lookback_seconds: Optional[float] = None
     log_folderpath: pathlib.Path = (
         pathlib.Path("~").expanduser() / "logged_memory_usage"
@@ -25,22 +25,26 @@ class Args:
     save_filepath: Optional[pathlib.Path] = None
 
     def __post_init__(self) -> None:
-        if self.start_datetime is None and self.lookback_seconds is None:
+        if self.start_datetime_str is None and self.lookback_seconds is None:
             raise ValueError(
-                "Either start_datetime or lookback_seconds must be specified"
+                "Either start_datetime_str or lookback_seconds must be specified"
             )
-        if self.start_datetime is not None and self.lookback_seconds is not None:
+        if self.start_datetime_str is not None and self.lookback_seconds is not None:
             raise ValueError(
-                "Only one of start_datetime or lookback_seconds may be specified"
+                "Only one of start_datetime_str or lookback_seconds may be specified"
             )
 
     @property
-    def effective_start_datetime(self) -> datetime:
-        if self.start_datetime is not None:
-            return self.start_datetime
+    def start_datetime(self) -> datetime:
+        if self.start_datetime_str is not None:
+            return str_to_datetime(self.start_datetime_str)
         elif self.lookback_seconds is not None:
-            return self.end_datetime - timedelta(seconds=self.lookback_seconds)
-        raise ValueError("Either start_datetime or lookback_seconds must be specified")
+            return str_to_datetime(self.end_datetime_str) - timedelta(seconds=self.lookback_seconds)
+        raise ValueError("Either start_datetime_str or lookback_seconds must be specified")
+
+    @property
+    def end_datetime(self) -> datetime:
+        return str_to_datetime(self.end_datetime_str)
 
 
 def find_valid_datetimes(
@@ -104,7 +108,7 @@ def main() -> None:
     sorted_datetimes = sorted([str_to_datetime(filename) for filename in filenames])
     valid_sorted_datetimes = find_valid_datetimes(
         sorted_datetimes=sorted_datetimes,
-        start_datetime=args.effective_start_datetime,
+        start_datetime=args.start_datetime,
         end_datetime=args.end_datetime,
     )
 
@@ -114,7 +118,7 @@ def main() -> None:
             args.log_folderpath / f"{datetime_to_str(datetime)}.csv"
             for datetime in valid_sorted_datetimes
         ],
-        start_datetime=args.effective_start_datetime,
+        start_datetime=args.start_datetime,
         end_datetime=args.end_datetime,
     )
 
