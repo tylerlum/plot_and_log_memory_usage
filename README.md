@@ -72,3 +72,5 @@ Example:
 ```
 plot_logged_memory_usage --lookback-seconds 60
 ```
+
+![plot_logged_memory_usage](https://github.com/tylerlum/plot_and_log_memory_usage/assets/26510814/e451e88e-493e-4009-aeca-706f0a0fa7fd)
